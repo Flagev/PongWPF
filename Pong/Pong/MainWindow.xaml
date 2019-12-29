@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pong"
         mc:Ignorable="d"
+        
         Title="Pong WPF" Height="450" Width="800">
-    <Grid>
-        <Rectangle Fill="#FFF4F4F5" Name="leftPallet" HorizontalAlignment="Left" Height="50" Margin="10,121,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
-        <Rectangle Fill="#FFF4F4F5" Name="rightPallet" HorizontalAlignment="Left" Height="50" Margin="762,121,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+    <Grid Name="mainGrid">
+        <Rectangle Fill="#FFF4F4F5" Name="leftPallet" HorizontalAlignment="Left" Height="50" Margin="10,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
+        <Rectangle Fill="#FFF4F4F5" Name="rightPallet" HorizontalAlignment="Left" Height="50" Margin="762,120,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
         <Ellipse Fill="#FFF4F4F5" Name="ball" HorizontalAlignment="Left" Height="20" Margin="189,153,0,0" Stroke="Black" VerticalAlignment="Top" Width="20"/>
         <TextBox HorizontalAlignment="Center"  Name="scoreBoard" Height="40" Margin="364,34,351,345" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="77" IsEnabled="False" FontSize="20"/>
-        <Button Content="Start" Name="bStart" HorizontalAlignment="Left" Height="43" Margin="343,350,0,0" VerticalAlignment="Top" Width="98" Click="bStart_Click"/>
+        <Button Content="Start" Name="bStart" HorizontalAlignment="Left" Height="43" Margin="343,350,0,0" VerticalAlignment="Top" Width="98" Click="BStart_Click"/>
     </Grid>
 </Window>

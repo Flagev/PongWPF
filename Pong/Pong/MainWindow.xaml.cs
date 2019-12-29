@@ -23,15 +23,49 @@ namespace Pong
         public MainWindow()
         {
             InitializeComponent();
-            readKeys();
+            EventManager.RegisterClassHandler(typeof(Window),
+            Keyboard.KeyUpEvent, new KeyEventHandler(KeyUpEventH), true);
+            EventManager.RegisterClassHandler(typeof(Window),
+            Keyboard.KeyDownEvent, new KeyEventHandler(KeyDownEventH), true);
         }
 
-        private void bStart_Click(object sender, RoutedEventArgs e)
+
+        private void BStart_Click(object sender, RoutedEventArgs e)
         {
             bStart.Content = "START";
         }
-        private void readKeys()
-        { 
+        private void KeyUpEventH(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.OemComma)
+            {
+                MessageBox.Show("YAY!!!");
+            }
+        }
+        private void KeyDownEventH(object sender, KeyEventArgs e)
+        {
+            int moveDistance = 5;
+            Thickness rightPalletMargin = rightPallet.Margin;
+            Thickness leftPalletMargin = leftPallet.Margin;
+            if (Keyboard.IsKeyDown(Key.Up) && rightPalletMargin.Top>=moveDistance) 
+            {
+                rightPalletMargin.Top -= moveDistance;
+            }
+            if (Keyboard.IsKeyDown(Key.Down) && rightPalletMargin.Top+moveDistance+rightPallet.Height<=mainGrid.ActualHeight)
+            {
+                rightPalletMargin.Top += moveDistance;
+            }
+            if (Keyboard.IsKeyDown(Key.W) && leftPalletMargin.Top >= moveDistance)
+            {
+                leftPalletMargin.Top -= moveDistance;
+
+            }
+            if (Keyboard.IsKeyDown(Key.S) && leftPalletMargin.Top + moveDistance + leftPallet.Height <= mainGrid.ActualHeight)
+            {
+                leftPalletMargin.Top += moveDistance;
+            }
+            rightPallet.Margin = rightPalletMargin;
+            leftPallet.Margin = leftPalletMargin;
         }
     }
 }
+

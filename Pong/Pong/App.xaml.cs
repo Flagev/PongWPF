@@ -13,5 +13,6 @@ namespace Pong
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
