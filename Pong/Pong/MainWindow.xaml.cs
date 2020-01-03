@@ -27,7 +27,7 @@ namespace Pong
             InitializeComponent();
             Events();
             ball = new Ball(30);
-
+            ;
         }
         public void Events()
         {
