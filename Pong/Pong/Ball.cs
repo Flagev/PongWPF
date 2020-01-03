@@ -19,7 +19,7 @@ namespace Pong
         public Ball(int speed)
         {
             rnd = new Random();
-            this.speed = speed;
+            this.speed = speed; ; ;
         }
         public void Start()
         {
