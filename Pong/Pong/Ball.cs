@@ -31,7 +31,7 @@ namespace Pong
             }
             else
             {
-                xSpeed = -100;
+                xSpeed = -100; ; ;
             }
             moving = true;
         }
