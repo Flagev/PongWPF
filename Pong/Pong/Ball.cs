@@ -15,12 +15,21 @@ namespace Pong
         public double y =0;
         public double xSpeed =0;
         public double ySpeed = 0;
+        public static double maxY = 500;
+        public static double maxX = 500;
         bool moving = false;
         public Ball(double radius, double speed)
         {
             rnd = new Random();
             this.speed = speed;
             this.radius = radius;
+        }
+        public void Init()
+        {
+            x = 0;
+            y = 0;
+            ySpeed = 0;
+            xSpeed = 0;
         }
         public void Start()
         {
@@ -29,11 +38,11 @@ namespace Pong
             ySpeed = 0;
             if (rnd.Next(2).Equals(1))
             {
-                xSpeed = 100;
+                xSpeed = 800;
             }
             else
             {
-                xSpeed = -100; ; ;
+                xSpeed = -800; ; ;
             }
             moving = true;
         }
@@ -70,14 +79,35 @@ namespace Pong
             if (distance < radius)
             {
                 xSpeed = -xSpeed;
-                ySpeed = pallet.y-y;
+                ySpeed = 10*(y- pallet.y);
             }
             
             //odleglosc okregu od prostej
         }
-        public void CheckBoundary()
-        { 
-        
+        public void CheckBoundary(Match match)
+        {
+            if (y+radius >= maxY)
+            {
+                y = maxY-radius;
+                ySpeed = -ySpeed;
+            }
+            if (y -radius<= -maxY)
+            {
+                y = -maxY+radius;
+                ySpeed = -ySpeed;
+            }
+            if (x + radius >= maxX)
+            {
+                match.leftScore++;
+                Init();
+                
+            }
+            if (x - radius <= -maxX)
+            {
+                match.rightScore++;
+                Init();
+                
+            }
         }
     }
 }

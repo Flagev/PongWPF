@@ -24,6 +24,7 @@ namespace Pong
         Ball ball;
         Pallet rightPallet;
         Pallet leftPallet;
+        Match match;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +32,10 @@ namespace Pong
             ball = new Ball(ballImg.Width,20);
             rightPallet = new Pallet(rightPalletImg.Margin.Left);
             leftPallet = new Pallet(leftPalletImg.Margin.Left);
+            match = new Match(3);
             Pallet.maxY = Math.Abs(mainGrid.Height);
+            Ball.maxY = Math.Abs(mainGrid.Height);
+            Ball.maxX = Math.Abs(mainGrid.Width);
             ;
         }
         public void Events()
@@ -56,7 +60,21 @@ namespace Pong
                 //Sprawdzanie czy pilka dotyka paletki
                 ball.CheckPalletTouched(rightPallet);
                 ball.CheckPalletTouched(leftPallet);
-                ball.CheckBoundary();
+                ball.CheckBoundary(match);
+                (bool leftVictory,bool rightVictory)=match.CheckVictory();
+                if (leftVictory || rightVictory) 
+                {
+                    ball.Init();
+                }
+                if (leftVictory)
+                {
+                    MessageBox.Show("LEFT Victory!");
+                }
+                if (rightVictory)
+                {
+                    ball.Init();
+                    MessageBox.Show("RIGHT Victory!");
+                }
                 //Aktualizacja elementow WPF
                 Thickness ballMargin = ballImg.Margin;
                 Thickness rightPalletMargin = rightPalletImg.Margin;
@@ -79,6 +97,9 @@ namespace Pong
                 rightPalletY.Text = rightPallet.y.ToString("N1");
                 leftPalletDistance.Text = leftPallet.ballDistance.ToString("N1");
                 rightPalletDistance.Text = rightPallet.ballDistance.ToString("N1");
+
+                leftScore.Text = match.leftScore.ToString();
+                rightScore.Text = match.rightScore.ToString();
             });
         }
 
@@ -86,7 +107,6 @@ namespace Pong
         {
             bStart.Content = "START";
             ball.Start();
-            scoreBoard.Text = ball.xSpeed.ToString();
         }
         private void KeyUpEventH(object sender, KeyEventArgs e)
         {

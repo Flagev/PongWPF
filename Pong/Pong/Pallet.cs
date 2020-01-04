@@ -9,7 +9,7 @@ namespace Pong
 
     class Pallet
     {
-        double speed = 5;
+        double speed = 40;
         public double width = 20;
         public double height = 100;
         public double x = 0;
