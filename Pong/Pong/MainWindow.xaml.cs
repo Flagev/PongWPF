@@ -28,9 +28,10 @@ namespace Pong
         {
             InitializeComponent();
             Events();
-            ball = new Ball(30);
+            ball = new Ball(ballImg.Width,20);
             rightPallet = new Pallet(rightPalletImg.Margin.Left);
             leftPallet = new Pallet(leftPalletImg.Margin.Left);
+            Pallet.maxY = Math.Abs(mainGrid.Height);
             ;
         }
         public void Events()
@@ -46,23 +47,29 @@ namespace Pong
             myTimer.Interval = 10; // 1000 ms is one second
             myTimer.Start();
         }
-        public void ElapsedEventH (object source, ElapsedEventArgs e)
+        public void ElapsedEventH(object source, ElapsedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
             {
-  
-            //Obliczanie wspolrzedncych
-            ball.CalcPos();
-            ball.CheckPalletTouched(1, 40, rightPalletImg.Margin.Left, rightPalletImg.Margin.Top);
-
-
-
+                //Obliczanie wspolrzedncych pilki
+                ball.CalcPos();
+                //Sprawdzanie czy pilka dotyka paletki
+                ball.CheckPalletTouched(rightPallet);
+                ball.CheckPalletTouched(leftPallet);
+                ball.CheckBoundary();
                 //Aktualizacja elementow WPF
                 Thickness ballMargin = ballImg.Margin;
+                Thickness rightPalletMargin = rightPalletImg.Margin;
+                Thickness leftPalletMargin = leftPalletImg.Margin;
                 ballMargin.Left = ball.x;
                 ballMargin.Top = ball.y;
                 ballImg.Margin = ballMargin;
-
+                rightPalletMargin.Left = rightPallet.x;
+                rightPalletMargin.Top = rightPallet.y;
+                rightPalletImg.Margin = rightPalletMargin;
+                leftPalletMargin.Left = leftPallet.x;
+                leftPalletMargin.Top = leftPallet.y;
+                leftPalletImg.Margin = leftPalletMargin;
                 //Wyswietlanie wspolrzednych w polach tesktowych
                 ballX.Text = ball.x.ToString("N1");
                 ballY.Text = ball.y.ToString("N1");
@@ -70,6 +77,8 @@ namespace Pong
                 leftPalletY.Text = leftPallet.y.ToString("N1");
                 rightPalletX.Text = rightPallet.x.ToString("N1");
                 rightPalletY.Text = rightPallet.y.ToString("N1");
+                leftPalletDistance.Text = leftPallet.ballDistance.ToString("N1");
+                rightPalletDistance.Text = rightPallet.ballDistance.ToString("N1");
             });
         }
 
@@ -88,40 +97,28 @@ namespace Pong
         }
         private void KeyDownEventH(object sender, KeyEventArgs e)
         {
-            int moveDistance = 5;
-            Thickness rightPalletMargin = rightPalletImg.Margin;
-            Thickness leftPalletMargin = leftPalletImg.Margin;
-            scoreBoard.Text = rightPalletMargin.Top.ToString();
             if (Keyboard.IsKeyDown(Key.Up))
             {
-                rightPalletMargin.Top -= moveDistance;
-                if ((rightPalletMargin.Top - rightPalletImg.Height) < -1*mainGrid.ActualHeight)
-                {
-                    rightPalletMargin.Top = -1*mainGrid.ActualHeight + rightPalletImg.Height;
-                }
+                rightPallet.MoveDown();
             }
             if (Keyboard.IsKeyDown(Key.Down))
             {
-                rightPalletMargin.Top += moveDistance;
-                if ((rightPalletMargin.Top + rightPalletImg.Height) > mainGrid.ActualHeight)
-                {
-                    rightPalletMargin.Top = mainGrid.ActualHeight - rightPalletImg.Height;
-                }
+                rightPallet.MoveUp();
             }
             if (Keyboard.IsKeyDown(Key.W))
             {
-                leftPalletMargin.Top -= moveDistance;
-                if ((leftPalletMargin.Top - leftPalletImg.Height) < -1 * mainGrid.ActualHeight)
-                {
-                    leftPalletMargin.Top = -1 * mainGrid.ActualHeight + leftPalletImg.Height;
-                }
+                leftPallet.MoveDown();
             }
-            if (Keyboard.IsKeyDown(Key.S) && leftPalletMargin.Top + moveDistance + leftPalletImg.Height <= mainGrid.ActualHeight)
+            if (Keyboard.IsKeyDown(Key.S))
             {
-                leftPalletMargin.Top += moveDistance;
+                leftPallet.MoveUp();
             }
-            rightPalletImg.Margin = rightPalletMargin;
-            leftPalletImg.Margin = leftPalletMargin;
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            // close all active threads
+            Environment.Exit(0);
         }
     }
 }

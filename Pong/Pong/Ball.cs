@@ -16,15 +16,17 @@ namespace Pong
         public double xSpeed =0;
         public double ySpeed = 0;
         bool moving = false;
-        public Ball(int speed)
+        public Ball(double radius, double speed)
         {
             rnd = new Random();
-            this.speed = speed; ; ;
+            this.speed = speed;
+            this.radius = radius;
         }
         public void Start()
         {
             x = 0;
             y = 0;
+            ySpeed = 0;
             if (rnd.Next(2).Equals(1))
             {
                 xSpeed = 100;
@@ -40,15 +42,42 @@ namespace Pong
             x += (xSpeed / 100.0);
             y += (ySpeed / 100.0);
         }
-        public double CheckPalletTouched(int palNumber, double palHeight, double palX, double palY)
+        public void CheckPalletTouched(Pallet pallet)
         {
-            //odleglosc okregu od wierzcholka
-            if (Math.Sqrt(Math.Pow(((palY + palHeight / 2) - y),2) + Math.Pow(((palX) - x),2)) < radius)
+            double pWidth=0;
+            double pY = 0;
+            pY = y;
+            if ((pallet.y - y) > pallet.height)
             {
-                ySpeed = 10.0;
+                pY = pallet.y - pallet.height;
             }
-            return Math.Sqrt(Math.Pow(((palY + palHeight / 2) - y), 2) + Math.Pow(((palX) - x), 2));
+            if ((pallet.y - y) < -pallet.height)
+            {
+                pY = pallet.y + pallet.height;
+            }
+
+            if (pallet.x > 0)
+            {
+                pWidth = -pallet.width;
+            }
+            else
+            {
+                pWidth = pallet.width;
+            }
+            double distance = Math.Sqrt(Math.Pow(((pY) - y), 2) + Math.Pow(((pallet.x+pWidth) - x), 2));
+            pallet.ballDistance = distance;
+            //Odbicie od paletki
+            if (distance < radius)
+            {
+                xSpeed = -xSpeed;
+                ySpeed = pallet.y-y;
+            }
+            
             //odleglosc okregu od prostej
+        }
+        public void CheckBoundary()
+        { 
+        
         }
     }
 }

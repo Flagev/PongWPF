@@ -10,10 +10,11 @@ namespace Pong
     class Pallet
     {
         double speed = 5;
-        double width = 20;
-        double height = 100;
+        public double width = 20;
+        public double height = 100;
         public double x = 0;
         public double y = 0;
+        public double ballDistance=0;
         public static double maxY=500;
         public Pallet(double startPosX)
         {
