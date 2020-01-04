@@ -22,11 +22,15 @@ namespace Pong
     public partial class MainWindow : Window
     {
         Ball ball;
+        Pallet rightPallet;
+        Pallet leftPallet;
         public MainWindow()
         {
             InitializeComponent();
             Events();
             ball = new Ball(30);
+            rightPallet = new Pallet(rightPalletImg.Margin.Left);
+            leftPallet = new Pallet(leftPalletImg.Margin.Left);
             ;
         }
         public void Events()
@@ -47,12 +51,25 @@ namespace Pong
             this.Dispatcher.Invoke(() =>
             {
   
-            Thickness ballMargin = ballImg.Margin;
+            //Obliczanie wspolrzedncych
             ball.CalcPos();
-            ballMargin.Left = ball.x;
-            //ballMargin.Top = ball.x;
-            ballImg.Margin = ballMargin;
+            ball.CheckPalletTouched(1, 40, rightPalletImg.Margin.Left, rightPalletImg.Margin.Top);
 
+
+
+                //Aktualizacja elementow WPF
+                Thickness ballMargin = ballImg.Margin;
+                ballMargin.Left = ball.x;
+                ballMargin.Top = ball.y;
+                ballImg.Margin = ballMargin;
+
+                //Wyswietlanie wspolrzednych w polach tesktowych
+                ballX.Text = ball.x.ToString("N1");
+                ballY.Text = ball.y.ToString("N1");
+                leftPalletX.Text = leftPallet.x.ToString("N1");
+                leftPalletY.Text = leftPallet.y.ToString("N1");
+                rightPalletX.Text = rightPallet.x.ToString("N1");
+                rightPalletY.Text = rightPallet.y.ToString("N1");
             });
         }
 

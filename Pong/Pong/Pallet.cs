@@ -6,10 +6,45 @@ using System.Threading.Tasks;
 
 namespace Pong
 {
-   
+
     class Pallet
     {
-        int x;
-        int y;
+        double speed = 5;
+        double width = 20;
+        double height = 100;
+        public double x = 0;
+        public double y = 0;
+        public static double maxY=500;
+        public Pallet(double startPosX)
+        {
+            x = startPosX;
+            y = 0;
+        }
+        public Pallet(double startPosX, double startPosY)
+        {
+            x = startPosX;
+            y = startPosY;
+        }
+        public double MoveUp()
+        {
+            y += speed;
+            //Ograniczenie wymiarow planszy
+            if ((y + height) > maxY)
+            {
+                y = maxY - height;
+            }
+            return y;
+        }
+        public double MoveDown()
+        {
+            y -= speed;
+            //Ograniczenie wymiarow planszy
+            if ((y - height) < -1 * maxY)
+            {
+                y = -1 * maxY + height;
+            }
+            return y;
+        }
     }
+
 }

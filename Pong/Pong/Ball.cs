@@ -9,12 +9,12 @@ namespace Pong
     class Ball
     {
         Random rnd;
-        int speed;
-        int radius=20;
-        public int x=0;
-        public int y=0;
-        public int xSpeed=0;
-        int ySpeed=0;
+        double speed;
+        double radius =20;
+        public double x=0;
+        public double y =0;
+        public double xSpeed =0;
+        public double ySpeed = 0;
         bool moving = false;
         public Ball(int speed)
         {
@@ -37,8 +37,18 @@ namespace Pong
         }
         public void CalcPos()
         {
-            x += (int)(xSpeed / 100.0);
-            y += (int)(ySpeed / 100.0);
+            x += (xSpeed / 100.0);
+            y += (ySpeed / 100.0);
+        }
+        public double CheckPalletTouched(int palNumber, double palHeight, double palX, double palY)
+        {
+            //odleglosc okregu od wierzcholka
+            if (Math.Sqrt(Math.Pow(((palY + palHeight / 2) - y),2) + Math.Pow(((palX) - x),2)) < radius)
+            {
+                ySpeed = 10.0;
+            }
+            return Math.Sqrt(Math.Pow(((palY + palHeight / 2) - y), 2) + Math.Pow(((palX) - x), 2));
+            //odleglosc okregu od prostej
         }
     }
 }
